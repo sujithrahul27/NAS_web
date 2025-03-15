@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game 3 - Article 18 Abolition of Titles</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        #notepad {
+            width: 400px;
+            height: 600px;
+            margin: 50px auto;
+            border: 2px solid black;
+            position: relative;
+            background-color: #fff;
+            overflow: hidden;<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Breaking Barriers Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        #gameBoard {
+            display: grid;
+            grid-template-columns: repeat(5, 100px);
+            grid-template-rows: repeat(5, 100px);
+            gap: 10px;
+            margin: 20px auto;
+            width: 550px;
+            height: 550px;
+            position: relative;
+        }
+        .character {
+            width: 100px;
+            height: 100px;
+            background-color: lightblue;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 2px solid black;
+            position: relative;
+        }
+        .barrier {
+            position: absolute;
+            background-color: red;
+            width: 100px;
+            height: 10px;
+            top: 50%;
+            left: 0;
+            z-index: 1;
+        }
+        #barrierBreaker {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: green;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        #message {
+            margin-top: 20px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Breaking Barriers Game</h1>
+    <div id="gameBoard">
+        <!-- Characters with barriers -->
+        <div class="character" style="grid-column: 1; grid-row: 1;">Doctor</div>
+        <div class="character" style="grid-column: 2; grid-row: 1;">Student</div>
+        <div class="character" style="grid-column: 3; grid-row: 1;">Farmer</div>
+        <div class="character" style="grid-column: 4; grid-row: 1;">Businessman</div>
+        <div class="character" style="grid-column: 5; grid-row: 1;">Artist</div>
+
+        <div class="barrier" style="grid-column: 2; grid-row: 1;"></div>
+        <div class="barrier" style="grid-column: 3; grid-row: 1;"></div>
+        <div class="barrier" style="grid-column: 4; grid-row: 1;"></div>
+    </div>
+
+    <button id="barrierBreaker">Remove Barriers</button>
+    <div id="message"></div>
+
+    <script>
+        document.getElementById('barrierBreaker').addEventListener('click', () => {
+            const barriers = document.querySelectorAll('.barrier');
+            barriers.forEach(barrier => barrier.style.display = 'none');
+            document.getElementById('message').textContent = 'All barriers removed! Everyone is connected.';
+        });
+    </script>
+
+</body>
+</html>
+
+            background-image: linear-gradient(to bottom, #fff 1px, transparent 1px),
+                              linear-gradient(to right, #fff 1px, transparent 1px);
+            background-size: 100% 30px, 30px 100%;
+            background-position: top left;
+        }
+        .name {
+            position: absolute;
+            font-size: 18px;
+            padding: 5px;
+            border-bottom: 1px dashed #ddd;
+            white-space: nowrap;
+        }
+        #eraserTool {
+            width: 50px;
+            height: 50px;
+            background-color: red;
+            border: 2px solid black;
+            cursor: url('path-to-round-cursor-icon.png'), auto; /* Change this path to your round cursor icon */
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .hidden {
+            display: none;
+        }
+        .button {
+            margin: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Erase the Titles</h1>
+    
+    <div id="notepad">
+        <!-- Names with titles -->
+        <div class="name" style="top: 10px; left: 10px;">Dr. John Smith</div>
+        <div class="name" style="top: 50px; left: 10px;">Ms. Jane Doe</div>
+        <div class="name" style="top: 90px; left: 10px;">Prof. Alice Johnson</div>
+        <div class="name" style="top: 130px; left: 10px;">Mr. Bob Brown</div>
+        <div class="name" style="top: 170px; left: 10px;">Mrs. Emily Davis</div>
+        <div class="name" style="top: 10px; left: 200px;">Dr. Michael Clark</div>
+        <div class="name" style="top: 50px; left: 200px;">Ms. Sophia Martinez</div>
+        <div class="name" style="top: 90px; left: 200px;">Prof. David Wilson</div>
+        <div class="name" style="top: 130px; left: 200px;">Mr. Daniel Lee</div>
+        <div class="name" style="top: 170px; left: 200px;">Mrs. Olivia Garcia</div>
+    </div>
+    
+    <button id="eraserTool" class="button"></button>
+    <button id="resetButton" class="button">Reset</button>
+
+    <script>
+        const eraserTool = document.getElementById('eraserTool');
+        const notepad = document.getElementById('notepad');
+        const resetButton = document.getElementById('resetButton');
+        let isDragging = false;
+
+        eraserTool.addEventListener('mousedown', () => {
+            isDragging = true;
+            document.body.style.cursor = 'url("path-to-round-cursor-icon.png"), auto'; // Change this path to your round cursor icon
+        });
+
+        document.addEventListener('mouseup', () => {
+            isDragging = false;
+            document.body.style.cursor = 'auto';
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (isDragging) {
+                const eraserRect = eraserTool.getBoundingClientRect();
+                const notepadRect = notepad.getBoundingClientRect();
+                const x = e.clientX - notepadRect.left - (eraserRect.width / 2);
+                const y = e.clientY - notepadRect.top - (eraserRect.height / 2);
+
+                eraserTool.style.left = `${Math.max(0, Math.min(notepadRect.width - eraserRect.width, x))}px`;
+                eraserTool.style.top = `${Math.max(0, Math.min(notepadRect.height - eraserRect.height, y))}px`;
+
+                eraseTitles(x, y, eraserRect.width, eraserRect.height);
+            }
+        });
+
+        function eraseTitles(x, y, width, height) {
+            const names = document.querySelectorAll('.name');
+            names.forEach(name => {
+                const nameRect = name.getBoundingClientRect();
+                const notepadRect = notepad.getBoundingClientRect();
+
+                if (nameRect.left < x + width && nameRect.right > x &&
+                    nameRect.top < y + height && nameRect.bottom > y) {
+                    name.innerHTML = name.innerHTML.replace(/(Dr\.|Ms\.|Prof\.|Mr\.|Mrs\.)\s*/g, '');
+                }
+            });
+        }
+
+        resetButton.addEventListener('click', () => {
+            const names = document.querySelectorAll('.name');
+            names.forEach(name => {
+                // Reset the names to include titles (for simplicity, add example titles back)
+                const originalTitles = {
+                    0: "Dr. John Smith",
+                    1: "Ms. Jane Doe",
+                    2: "Prof. Alice Johnson",
+                    3: "Mr. Bob Brown",
+                    4: "Mrs. Emily Davis",
+                    5: "Dr. Michael Clark",
+                    6: "Ms. Sophia Martinez",
+                    7: "Prof. David Wilson",
+                    8: "Mr. Daniel Lee",
+                    9: "Mrs. Olivia Garcia"
+                };
+                name.innerHTML = Object.values(originalTitles)[Array.from(names).indexOf(name)];
+            });
+        });
+    </script>
+
+</body>
+</html>

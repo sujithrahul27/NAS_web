@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sublevel 1 Continuation</title>
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+
+    <!-- Font Awesome for speaker icon -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+
+    <style>
+      body,
+      html {
+        height: 100%;
+        margin: 0;
+        font-family: "Inter", sans-serif;
+      }
+
+      .background {
+        background-image: url("Designer (1).png"); /* Replace with actual background image */
+        background-size: cover;
+        background-position: center;
+        height: 100%;
+        position: relative;
+      }
+
+      .overlay {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        color: white;
+        padding: 20px;
+        text-align: center;
+      }
+
+      .text-box {
+        font-size: 24px;
+        margin-bottom: 20px;
+        position: relative;
+        display: inline-block;
+        padding-right: 40px; /* Ensure space for the icon */
+      }
+
+      .speaker-icon {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+      }
+
+      .btn-custom {
+        background-color: #28a745;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        font-size: 18px;
+        cursor: pointer;
+        border-radius: 5px;
+      }
+
+      .btn-custom:hover {
+        background-color: #218838;
+      }
+
+      .character {
+        position: absolute;
+        bottom: -30px;
+        right: 50px;
+        width: 500x; /* Adjust the size of the character */
+        height: auto; /* Maintain aspect ratio */
+      }
+    </style>
+  </head>
+  <body>
+    <div class="background">
+      <!-- Character Image (Visible from the beginning) -->
+      <img
+        id="character"
+        src="images/jackie_chan-removebg-preview.png"
+        class="character"
+        alt="Character Image"
+      />
+      <!-- Replace with actual character image -->
+
+      <!-- Overlay with Text Box -->
+      <div class="overlay">
+        <div class="text-box">
+          <span id="text-box">Oh my god, the bridge is broken.</span>
+          <i
+            id="speaker-icon"
+            class="fas fa-volume-up speaker-icon"
+            onclick="toggleAudio()"
+          ></i>
+          <!-- Speaker icon -->
+        </div>
+        <button id="next-button" class="btn-custom" onclick="nextText()">
+          Next
+        </button>
+        <button
+          id="continue-button"
+          class="btn-custom"
+          style="display: none"
+          onclick="window.location.href='game1.html'"
+        >
+          Continue
+        </button>
+      </div>
+    </div>
+
+    <!-- Audio Files -->
+    <audio id="audioStep1" src="bb.mp3"></audio>
+    <!-- Replace with the path to the initial audio file -->
+    <audio id="audioStep2" src="fwff.mp3"></audio>
+    <!-- Replace with the path to the next audio file -->
+
+    <!-- Bootstrap JS -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+
+    <script>
+      let step = 1;
+      const textBox = document.getElementById("text-box");
+      const nextButton = document.getElementById("next-button");
+      const continueButton = document.getElementById("continue-button");
+      const audioStep1 = document.getElementById("audioStep1");
+      const audioStep2 = document.getElementById("audioStep2");
+
+      function nextText() {
+        if (step === 1) {
+          textBox.innerText = "Find a way to fix the bridge.";
+          step = 2;
+          nextButton.innerText = "Continue";
+          continueButton.style.display = "block"; // Show continue button
+          audioStep1.pause(); // Pause the initial audio
+          audioStep2.play(); // Play the next audio
+        } else if (step === 2) {
+          window.location.href = "game1.html"; // Redirect to the next page
+        }
+      }
+
+      function toggleAudio() {
+        if (step === 1) {
+          // Play or pause the initial audio
+          if (audioStep1.paused) {
+            audioStep1.play();
+          } else {
+            audioStep1.pause();
+          }
+        } else if (step === 2) {
+          // Play or pause the next audio
+          if (audioStep2.paused) {
+            audioStep2.play();
+          } else {
+            audioStep2.pause();
+          }
+        }
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Align the Icons</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: url('Designer (1).png') no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            transition: background 1s ease;
+        }
+        #gameArea {
+            display: flex;
+            justify-content: space-between;
+            width: 80%;
+            height: 400px;
+            position: relative;
+        }
+        .image {
+            width: 45px;
+            height: 100px;
+            position: absolute;
+            cursor: pointer;
+        }
+        .placeholder {
+            background-image: url('wd.jpg'); /* Add your image here */
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            width: 100px;
+            height: 100px;
+            position: absolute;
+            cursor: pointer;
+        }
+        .dotted-rectangle {
+            width: 45px; /* Adjust to match gap size */
+            height: 100px; /* Adjust to match gap size */
+            border: 2px dotted #000;
+            position: absolute;
+        }
+        #message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+            color: white;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+        }
+        #videoContainer {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        #continueButton, #nextButton, #skipButton, #hintButton {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 18px;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #continueButton { background-color: #28a745; }
+        #skipButton { background-color: #dc3545; }
+        #nextButton { background-color: #007bff; display: none; }
+        #hintButton { background-color: #17a2b8; }
+        #continueButton:hover { background-color: #218838; }
+        #skipButton:hover { background-color: #c82333; }
+        #nextButton:hover { background-color: #0056b3; }
+        #hintButton:hover { background-color: #138496; }
+        .completed {
+            background: url('Designer (2).png') no-repeat center center fixed;
+            background-size: cover;
+        }
+    </style>
+</head>
+<body>
+    <div id="gameArea">
+        <!-- Placeholder with background images -->
+        <div class="placeholder" style="left: 50px; top: 100px;"></div>
+        <div class="placeholder" style="left: 200px; top: 100px;"></div>
+        <div class="placeholder" style="left: 350px; top: 100px;"></div>
+        <div class="placeholder" style="left: 500px; top: 100px;"></div>
+        <div class="placeholder" style="left: 650px; top: 100px;"></div>
+        <div class="placeholder" style="left: 800px; top: 100px;"></div>
+
+        <!-- Dotted Rectangles -->
+        <div class="dotted-rectangle" style="left: 150px; top: 100px;"></div>
+        <div class="dotted-rectangle" style="left: 300px; top: 100px;"></div>
+        <div class="dotted-rectangle" style="left: 450px; top: 100px;"></div>
+        <div class="dotted-rectangle" style="left: 600px; top: 100px;"></div>
+        <div class="dotted-rectangle" style="left: 750px; top: 100px;"></div>
+        <div class="dotted-rectangle" style="left: 900px; top: 100px;"></div>
+
+        <!-- Game Images -->
+        <img src="pp.png" class="image" style="left: 152px; top: -50px;" alt="Image 1">
+        <img src="fm.png" class="image" style="left: 302px; top: 250px;" alt="Image 2">
+        <img src="pol.png" class="image" style="left: 452px; top: -30px;" alt="Image 3">
+        <img src="wm.png" class="image" style="left: 602px; top: 300px;" alt="Image 4">
+        <img src="judge.png" class="image" style="left: 752px; top: -40px;" alt="Image 5">
+        <img src="old.jpg" class="image" style="left: 902px; top: 200px;" alt="Image 6">
+    </div>
+
+    <div id="message">EQUALITY BEFORE LAW</div>
+    <div id="videoContainer">
+        <video id="video" width="600" controls>
+            <source src="video.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <button id="skipButton">Skip</button>
+        <button id="continueButton" onclick="playVideo()">Continue</button>
+    </div>
+
+    <div id="scoreContainer">
+        <button id="hintButton" onclick="showHint()">Hint</button>
+        <button id="nextButton" onclick="window.location.href='2level.html'">Next</button>
+    </div>
+    
+    <audio id="bgMusic" src="mp.mp3" loop></audio>
+
+    <script>
+        const images = document.querySelectorAll('.image');
+        const placeholders = document.querySelectorAll('.placeholder');
+        const message = document.getElementById('message');
+        const videoContainer = document.getElementById('videoContainer');
+        const skipButton = document.getElementById('skipButton');
+        const continueButton = document.getElementById('continueButton');
+        const bgMusic = document.getElementById('bgMusic');
+        const scoreContainer = document.getElementById('scoreContainer');
+        const nextButton = document.getElementById('nextButton');
+        const hintButton = document.getElementById('hintButton');
+        let selectedImage = null;
+        let videoSkipped = false;
+
+        // Ensure the background music is triggered by user interaction
+        images.forEach(image => {
+            image.addEventListener('click', () => {
+                bgMusic.play();
+                selectedImage = image;
+            });
+        });
+
+        function moveImage(event) {
+            if (selectedImage) {
+                const top = parseInt(selectedImage.style.top);
+                if (event.key === 'ArrowUp') {
+                    selectedImage.style.top = Math.max(top - 10, 0) + 'px';
+                } else if (event.key === 'ArrowDown') {
+                    selectedImage.style.top = Math.min(top + 10, 250) + 'px';
+                }
+                checkAlignment();
+            }
+        }
+
+        function checkAlignment() {
+            let allAligned = true;
+            images.forEach((image, index) => {
+                const placeholder = placeholders[index];
+                const imageTop = parseInt(image.style.top);
+                const placeholderTop = parseInt(placeholder.style.top);
+                if (Math.abs(imageTop - placeholderTop) > 10) {
+                    allAligned = false;
+                }
+            });
+
+            if (allAligned) {
+                showCompletionMessage();
+            }
+        }
+
+        function showCompletionMessage() {
+            message.style.display = 'block'; // Show the message
+            setTimeout(() => {
+                message.style.display = 'none'; // Hide the message
+                document.body.classList.add('completed'); // Change background
+                removeAlignment(); // Remove alignment
+                showVideoContainer();
+            }, 3000); // Show message for 3 seconds
+        }
+
+        function removeAlignment() {
+            images.forEach(image => {
+                image.style.top = ''; // Clear top positioning
+                image.style.left = ''; // Clear left positioning
+            });
+            placeholders.forEach(placeholder => {
+                placeholder.style.top = ''; // Clear top positioning
+                placeholder.style.left = ''; // Clear left positioning
+            });
+        }
+
+        function showVideoContainer() {
+            videoContainer.style.display = 'block'; // Show video container
+            bgMusic.pause(); // Pause background music
+            nextButton.style.display = 'none'; // Hide next button
+        }
+
+        function playVideo() {
+            const video = document.getElementById('video');
+            video.play();
+            video.addEventListener('ended', () => {
+                showNextButton();
+            });
+        }
+
+        function skipVideo() {
+            videoSkipped = true;
+            showNextButton();
+        }
+
+        function showNextButton() {
+            videoContainer.style.display = 'none'; // Hide video container
+            nextButton.style.display = 'block'; // Show next button
+        }
+
+        function showHint() {
+            alert("Click on the icon and use the arrow keys to move it.");
+        }
+
+        // Event listeners for video and skip button
+        skipButton.addEventListener('click', skipVideo);
+
+        // Listen for arrow key events
+        document.addEventListener('keydown', moveImage);
+    </script>
+</body>
+</html>

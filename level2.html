@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Level 2 - Congrats and Rewards</title>
+    <style>
+      body,
+      html {
+        height: 100%;
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+      }
+
+      .background {
+        background-image: url("Designer (2).png"); /* Initial background image */
+        background-size: cover;
+        background-position: center;
+        height: 100%;
+        position: relative;
+      }
+
+      .overlay {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        color: white;
+        padding: 20px;
+        text-align: center;
+        z-index: 1; /* Ensure overlay is on top */
+      }
+
+      .btn-custom {
+        background-color: #28a745;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        font-size: 18px;
+        cursor: pointer;
+        border-radius: 5px;
+        margin-top: 20px;
+      }
+
+      .btn-custom:hover {
+        background-color: #218838;
+      }
+
+      #flags {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 24px;
+        color: black;
+        display: flex;
+        align-items: center;
+        z-index: 2; /* Ensure flags are on top of background */
+      }
+
+      #flags img {
+        width: 30px;
+        height: auto;
+        margin-left: 10px;
+      }
+
+      /* Character initially centered and hidden after background change */
+      .character {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%); /* Center the character */
+        width: 400px;
+        height: auto;
+        transition: left 2s, opacity 1s; /* Smooth transition for movement and fading */
+        opacity: 1; /* Initially visible */
+        z-index: 1; /* Ensure character is above background but below other elements */
+      }
+
+      /* Popup styling */
+      .popup {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: white;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        text-align: center;
+        z-index: 3; /* Ensure popup is on top */
+      }
+
+      .popup button {
+        background-color: #007bff;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 20px;
+      }
+
+      .popup button:hover {
+        background-color: #0056b3;
+      }
+
+      /* Continue button styling */
+      .continue-btn {
+        display: none;
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        font-size: 18px;
+        cursor: pointer;
+        border-radius: 5px;
+        z-index: 2;
+      }
+
+      .continue-btn:hover {
+        background-color: #0056b3;
+      }
+
+      /* Animation for moving character */
+      .character.move {
+        animation: moveToCenter 2s forwards;
+      }
+
+      @keyframes moveToCenter {
+        from {
+          left: 0;
+          transform: translate(0%, -50%);
+        }
+        to {
+          left: 50%;
+          transform: translate(-50%, -50%);
+        }
+      }
+
+      /* Animation for new character from the left */
+      .new-character-left {
+        position: absolute;
+        top: 50%;
+        left: 0; /* Starts at the left */
+        transform: translate(-50%, -50%);
+        width: 800px;
+        height: auto;
+        transition: left 2s, opacity 1s;
+        opacity: 0; /* Initially hidden */
+        z-index: 1; /* Ensure new character is above background but below other elements */
+      }
+
+      .new-character-left.move {
+        animation: moveToNearCenterLeft 2s forwards;
+      }
+
+      @keyframes moveToNearCenterLeft {
+        from {
+          left: 0;
+          transform: translate(-50%, -50%);
+        }
+        to {
+          left: calc(
+            50% - 400px
+          ); /* Adjust to ensure right edge stops before the left edge of the main character */
+          transform: translate(-50%, -50%);
+        }
+      }
+
+      /* Animation for new character from the right */
+      .new-character-right {
+        position: absolute;
+        top: 50%;
+        right: 0; /* Starts at the right */
+        transform: translate(50%, -50%);
+        width: 800px;
+        height: auto;
+        transition: right 2s, opacity 1s;
+        opacity: 0; /* Initially hidden */
+        z-index: 1; /* Ensure new character is above background but below other elements */
+      }
+
+      .new-character-right.move {
+        animation: moveToNearCenterRight 2s forwards;
+      }
+
+      @keyframes moveToNearCenterRight {
+        from {
+          right: 0;
+          transform: translate(50%, -50%);
+        }
+        to {
+          right: calc(
+            50% - 400px
+          ); /* Adjust to ensure left edge stops near the right edge of the main character */
+          transform: translate(50%, -50%);
+        }
+      }
+
+      /* Begin button styling */
+      #begin-btn {
+        display: none;
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        font-size: 18px;
+        cursor: pointer;
+        border-radius: 5px;
+        z-index: 2;
+      }
+
+      #begin-btn:hover {
+        background-color: #0056b3;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="flags">Flags: 0 <img src="if.jpg" alt="Indian Flag" /></div>
+    <!-- Add flag icon -->
+
+    <div class="background" id="background">
+      <img
+        id="character"
+        class="character"
+        src="images/jackie_chan-removebg-preview.png"
+        alt="Character"
+      />
+      <!-- Character initially centered -->
+      <img
+        id="new-character-left"
+        class="new-character-left"
+        src="images/ll.png"
+        alt="New Character Left"
+      />
+      <!-- New Character from Left -->
+      <img
+        id="new-character-right"
+        class="new-character-right"
+        src="right-character.png"
+        alt="New Character Right"
+      />
+      <!-- New Character from Right -->
+
+      <div class="overlay">
+        <div id="text-box">
+          Congrats on fixing the bridge. Let's start the journey.
+        </div>
+        <button id="next-button" class="btn-custom" onclick="nextStage()">
+          Next
+        </button>
+      </div>
+    </div>
+
+    <!-- Popup for rewards -->
+    <div id="rewardPopup" class="popup">
+      <p>You've received 10 India flags!</p>
+      <button onclick="closePopup()">Continue</button>
+    </div>
+
+    <!-- Continue button for character movement -->
+    <button id="continue-btn" class="continue-btn" onclick="moveCharacters()">
+      Continue
+    </button>
+
+    <!-- Begin button -->
+    <button id="begin-btn" onclick="startGame()">Begin</button>
+
+    <script>
+      let flags = 0;
+      let step = 0;
+
+      function nextStage() {
+        const textBox = document.getElementById("text-box");
+        const nextButton = document.getElementById("next-button");
+
+        if (step === 0) {
+          textBox.innerText = "Here is your reward of 10 India flags";
+          nextButton.innerText = "Continue";
+          step++;
+        } else if (step === 1) {
+          // Add 10 flags and show popup
+          flags += 10;
+          document.getElementById(
+            "flags"
+          ).innerHTML = `Flags: ${flags} <img src="if.jpg" alt="Indian Flag" />`;
+
+          // Show the reward popup
+          document.getElementById("rewardPopup").style.display = "block";
+        }
+      }
+
+      function closePopup() {
+        // Hide popup and proceed with the game
+        document.getElementById("rewardPopup").style.display = "none";
+
+        // Change background and hide the character
+        document.getElementById("background").style.backgroundImage =
+          "url('nbb.jpeg')"; // Replace with new background image
+        document.querySelector(".overlay").style.display = "none";
+        document.getElementById("character").style.opacity = "0"; // Hide the character initially
+
+        // Show the continue button for character movement
+        document.getElementById("continue-btn").style.display = "block"; // Show continue button
+      }
+
+      function moveCharacters() {
+        const character = document.getElementById("character");
+        const newCharacterLeft = document.getElementById("new-character-left");
+        const newCharacterRight = document.getElementById(
+          "new-character-right"
+        );
+        const beginButton = document.getElementById("begin-btn"); // Get the begin button element
+
+        // Show the main character
+        character.style.opacity = "1"; // Make the character visible
+        character.classList.add("move"); // Add class to start animation
+
+        // Hide the continue button after the character starts moving
+        document.getElementById("continue-btn").style.display = "none";
+
+        // Once the main character movement is complete, move the new characters
+        setTimeout(() => {
+          newCharacterLeft.style.opacity = "1"; // Make new character from the left visible
+          newCharacterLeft.classList.add("move"); // Add class to start animation
+
+          setTimeout(() => {
+            newCharacterRight.style.opacity = "1"; // Make new character from the right visible
+            newCharacterRight.classList.add("move"); // Add class to start animation
+
+            // Show the begin button after all animations are done
+            setTimeout(() => {
+              beginButton.style.display = "block"; // Show the begin button
+            }, 2000); // Adjust this delay to match the duration of the right character's movement
+          }, 2000); // Adjust this delay to match the duration of the left character's movement
+        }, 2000); // Adjust this delay to match the duration of the main character's movement
+      }
+
+      function startGame() {
+        // Implement what should happen when the Begin button is clicked
+        alert("Game Starting...");
+        // You can redirect to the next page or start a new game level here
+      }
+    </script>
+  </body>
+</html>

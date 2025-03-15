@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discrimination Game Level 2</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        #balanceScale {
+            width: 100%;
+            margin-top: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .side {
+            width: 150px;
+            height: 150px;
+            background-color: lightgrey;
+            margin: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+            border: 2px solid black;
+            transition: transform 0.5s ease;
+            position: relative;
+        }
+        .side img {
+            width: 150px;
+            height: 150px;
+            position: absolute;
+        }
+        .high {
+            transform: translateY(-60px); /* Increased gap */
+        }
+        .low {
+            transform: translateY(60px); /* Increased gap */
+        }
+        .balanced {
+            transform: translateY(0);
+        }
+        #options {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 60px; /* Increased margin-top */
+        }
+        .option {
+            width: 120px;
+            height: 150px;
+            margin: 10px;
+            background-color: lightblue;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            font-size: 16px;
+            border: 2px solid black;
+            flex-direction: column;
+        }
+        .option img {
+            width: 60px;
+            height: 60px;
+            margin-bottom: 10px;
+        }
+        .hidden {
+            display: none;
+        }
+        .message {
+            margin-top: 20px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        /* Styles for the dialog box */
+        #dialogBox {
+            display: none;
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border: 1px solid black;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+        #dialogBox h2 {
+            margin: 0;
+            font-size: 24px;
+        }
+        #dialogBox button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        /* Styles for the video element */
+        #videoContainer {
+            display: none;
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border: 1px solid black;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+        #videoContainer video {
+            max-width: 100%;
+            height: auto;
+        }
+        #videoContainer button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        /* Styles for the hint button */
+        #hintButton {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Balance the Scale</h1>
+
+    <div id="balanceScale">
+        <div id="leftSide" class="side low">
+            <img src="dis2.png" alt="Discriminated">
+            <div>Discriminated</div>
+        </div>
+        <div id="rightSide" class="side high">
+            <img src="dis1.png" alt="Discriminators">
+            <div>Discriminators</div>
+        </div>
+    </div>
+
+    <div id="options">
+        <div class="option" id="option1" onclick="selectOption(1)">
+            <img src="knife.png" alt="Knife">
+            <div>Knife</div>
+        </div>
+        <div class="option" id="option2" onclick="selectOption(2)">
+            <img src="weed.jpeg" alt="Weed">
+            <div>Weed</div>
+        </div>
+        <div class="option" id="option3" onclick="selectOption(3)">
+            <img src="pen.jpg" alt="Education">
+            <div>Pen</div>
+        </div>
+    </div>
+
+    <div id="message" class="message"></div>
+
+    <!-- Hint Button -->
+    <button id="hintButton" onclick="showHint()">Show Hint</button>
+
+    <!-- Dialog box HTML -->
+    <div id="dialogBox">
+        <h2>Prohibition Against Discrimination</h2>
+        <button onclick="showVideo()">OK</button>
+    </div>
+
+    <!-- Video Container -->
+    <div id="videoContainer">
+        <video id="video" controls>
+            <source src="Article 14 of the Constitution of India and the European Convention on_free.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <button onclick="closeVideo()">Close</button>
+    </div>
+
+    <script>
+        let correctChoices = [3, 6, 9];  // Correct choices
+        let selectedCorrectOptions = 0;
+        let currentOptionSet = 0;
+        const optionSets = [
+            [
+                { img: "knife.png", text: "Knife", comment: "An eye for an eye will only make the whole world blind. – Mahatma Gandhi" },
+                { img: "weed.jpeg", text: "Weed", comment: "Weeds are flowers in the wrong place. – George Washington Carver" },
+                { img: "pen.jpg", text: "Pen", comment: "The pen is mightier than the sword. – Edward Bulwer-Lytton" }
+            ],
+            [
+                { img: "alchol.jpeg", text: "Alcohol", comment: "Alcohol is the anesthesia by which we endure the operation of life. – George Bernard Shaw" },
+                { img: "over.jpeg", text: "Speed", comment: "Speed thrills but kills." },
+                { img: "book.jpg", text: "Book", comment: "The world belongs to those who read. – Rick Holland" }
+            ],
+            [
+                { img: "mobile.jpeg", text: "Mobile", comment: "The more we use our phones, the less we use our minds." },
+                { img: "download.jpeg", text: "Child Labour", comment: "Child labor is not just a crime against the individual; it is a crime against humanity." },
+                { img: "leader.jpg", text: "Leader", comment: "A leader is one who knows the way, goes the way, and shows the way. – John C. Maxwell" }
+            ]
+        ];
+
+        function selectOption(option) {
+            const chosenOption = optionSets[currentOptionSet][option - 1];
+
+            // Show individual comment based on option chosen
+            document.getElementById("message").textContent = chosenOption.comment;
+
+            if (correctChoices.includes((currentOptionSet * 3) + option)) {
+                selectedCorrectOptions++;
+                // Move the left side up when correct option is chosen
+                if (selectedCorrectOptions === 1) {
+                    document.getElementById("leftSide").classList.remove("low");
+                    document.getElementById("leftSide").classList.add("balanced");
+                }
+                if (selectedCorrectOptions === 3) {
+                    balanceScale();
+                    showDialog();
+                } else {
+                    nextOptionSet();
+                }
+            } else {
+                document.getElementById("message").textContent += " Incorrect. Try again!";
+            }
+        }
+
+        function nextOptionSet() {
+            currentOptionSet = (currentOptionSet + 1) % optionSets.length;
+            const options = document.querySelectorAll(".option");
+            optionSets[currentOptionSet].forEach((option, index) => {
+                options[index].querySelector("img").src = option.img;
+                options[index].querySelector("div").textContent = option.text;
+            });
+        }
+
+        function balanceScale() {
+            const leftSide = document.getElementById("leftSide");
+            const rightSide = document.getElementById("rightSide");
+
+            // Remove all classes to reset positions
+            leftSide.classList.remove("low", "balanced", "high");
+            rightSide.classList.remove("low", "balanced", "high");
+
+            // Add balanced class to both sides
+            leftSide.classList.add("balanced");
+            rightSide.classList.add("balanced");
+        }
+
+        function showDialog() {
+            document.getElementById("dialogBox").style.display = "block";
+        }
+
+        function showVideo() {
+            document.getElementById("dialogBox").style.display = "none";
+            document.getElementById("videoContainer").style.display = "block";
+        }
+
+        function closeVideo() {
+            document.getElementById("videoContainer").style.display = "none";
+        }
+
+        function showHint() {
+            alert("Think about what could help balance the scale based on the options provided.");
+        }
+    </script>
+</body>
+</html>
