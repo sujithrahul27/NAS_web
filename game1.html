@@ -10,7 +10,7 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background: url('Designer (1).png') no-repeat center center fixed;
+            background: url('images/Designer (1).png') no-repeat center center fixed;
             background-size: cover;
             margin: 0;
             font-family: Arial, sans-serif;
@@ -30,7 +30,7 @@
             cursor: pointer;
         }
         .placeholder {
-            background-image: url('wd.jpg'); /* Add your image here */
+            background-image: url('images/wd.jpg'); /* Add your image here */
             background-size: contain;
             background-repeat: no-repeat;
             background-position: center;
@@ -86,7 +86,7 @@
         #nextButton:hover { background-color: #0056b3; }
         #hintButton:hover { background-color: #138496; }
         .completed {
-            background: url('Designer (2).png') no-repeat center center fixed;
+            background: url('images/Designer (2).png') no-repeat center center fixed;
             background-size: cover;
         }
     </style>
@@ -110,18 +110,18 @@
         <div class="dotted-rectangle" style="left: 900px; top: 100px;"></div>
 
         <!-- Game Images -->
-        <img src="pp.png" class="image" style="left: 152px; top: -50px;" alt="Image 1">
-        <img src="fm.png" class="image" style="left: 302px; top: 250px;" alt="Image 2">
-        <img src="pol.png" class="image" style="left: 452px; top: -30px;" alt="Image 3">
-        <img src="wm.png" class="image" style="left: 602px; top: 300px;" alt="Image 4">
-        <img src="judge.png" class="image" style="left: 752px; top: -40px;" alt="Image 5">
-        <img src="old.jpg" class="image" style="left: 902px; top: 200px;" alt="Image 6">
+        <img src="images/pp.png" class="image" style="left: 152px; top: -50px;" alt="Image 1">
+        <img src="images/fm.png" class="image" style="left: 302px; top: 250px;" alt="Image 2">
+        <img src="images/pol.png" class="image" style="left: 452px; top: -30px;" alt="Image 3">
+        <img src="images/wm.png" class="image" style="left: 602px; top: 300px;" alt="Image 4">
+        <img src="images/judge.png" class="image" style="left: 752px; top: -40px;" alt="Image 5">
+        <img src="images/old.jpg" class="image" style="left: 902px; top: 200px;" alt="Image 6">
     </div>
 
     <div id="message">EQUALITY BEFORE LAW</div>
     <div id="videoContainer">
         <video id="video" width="600" controls>
-            <source src="video.mp4" type="video/mp4">
+            <source src="images/video.mp4" type="video/mp4">
             Your browser does not support the video tag.
         </video>
         <button id="skipButton">Skip</button>
@@ -133,7 +133,7 @@
         <button id="nextButton" onclick="window.location.href='2level.html'">Next</button>
     </div>
     
-    <audio id="bgMusic" src="mp.mp3" loop></audio>
+    <audio id="bgMusic" src="images/mp.mp3" loop></audio>
 
     <script>
         const images = document.querySelectorAll('.image');
